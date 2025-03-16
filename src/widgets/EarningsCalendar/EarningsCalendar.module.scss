@@ -1,0 +1,81 @@
+@use '../../styles/variables' as *;
+
+.earningsCalendar {
+    background: $primary-bg;
+    padding: 0.5rem;
+    border-radius: 0.2rem;
+    margin: 0.5rem;
+    .header {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: center;
+        .calendarTitle {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: $text-color-primary;
+            line-height: 1.5rem;
+            text-align: center;
+            .lightCaption {
+                font-weight: 400;
+                font-size: 1rem;
+                color: $text-color-secondary;
+            }
+        }
+    }
+    .dayCalender {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem;
+        text-align: center;
+        gap: 0.2rem;
+        .day {
+            width: 100%;
+            .dayTitle {
+                text-align: center;
+                font-weight: 700;
+                color: $text-color-primary;
+            }
+            .marketTitle {
+                display: flex;
+                justify-content: space-between;
+                .text {
+                    width: 100%;
+                    text-align: center;
+                    color: $text-color-secondary;
+                }
+            }
+            .companiesSection {
+                background: $white;
+                padding: 1rem;
+                display: flex;
+                justify-content: space-between;
+                gap: 0.5rem;
+                .amc, .bmo {
+                    width: 100%;
+                }
+                .item {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.2rem;
+                    .companyName {
+                        color: #dcdcdc;
+                        border: 1px solid #dcdcdc;
+                        font-size: 0.8rem;
+                        width: max-content;
+                        margin: 0 auto;
+                        padding: 2px;
+                    }
+                    .logo {
+                        width: 100%;
+                        object-fit: contain;
+                        max-height: 5rem;
+                    }
+                }
+            }
+        }
+        @media (max-width: $mobile) {
+            flex-wrap: wrap;
+        }
+    }
+}
+

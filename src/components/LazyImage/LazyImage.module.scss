@@ -1,0 +1,47 @@
+.imageWrapper {
+    position: relative;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+  }
+  
+  .image {
+    width: 100%;
+    height: auto;
+    transition: opacity 0.5s ease-in-out;
+    opacity: 0;
+    max-height: 3rem;
+  }
+  
+  .loaded {
+    opacity: 1;
+  }
+  
+  /* Loader styles */
+  .loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* SVG Spinner */
+  .spinner {
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    stroke: #ccc;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
