@@ -1,14 +1,19 @@
 @use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
 
 .earningsCalendar {
     background: $primary-bg;
     padding: 0.5rem;
-    border-radius: 0.2rem;
+    @include border-radius(0.2rem);
     margin: 0.5rem;
     .header {
         display: grid;
         grid-template-columns: auto 1fr;
+        
         align-items: center;
+        @media (max-width: $mobile) {
+            grid-template-columns: auto;
+        }
         .calendarTitle {
             font-size: 1.5rem;
             font-weight: 800;
@@ -77,5 +82,6 @@
             flex-wrap: wrap;
         }
     }
+    
 }
 

@@ -6,17 +6,24 @@ import { fetchLogos } from "../../api/logo";
 import { LogoData, LogoResponse } from "../../types/Logo";
 import { processEarningsData } from "../../utils/earnings";
 import styles from "./EarningsCalendar.module.scss";
-import { LazyImage } from "../../components/LazyImage";
 import EarningWhisperLogo from "../../assets/earnings-whisper-full-logo.svg";
+import EarningsDay from "./EarningsDay";
+import { useDeviceSize } from "../../hooks/useDeviceSize";
+import HorizontalScroll from "../../components/HorizontalScroll";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const EarningsCalendar = () => {
   const { data: earningsData } = useEarnings();
+  const isMobile = useDeviceSize();
 
   const [calendarData, setCalendarData] =
     useState<
       Record<string, { before: CalendarData[]; after: CalendarData[] }>
     >();
+  const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Fetch logos in batches
   const fetchAllLogos = async (tickerArray: string[]) => {
     const chunkSize = 100;
     const logoDataArray: LogoData[] = [];
@@ -37,49 +44,22 @@ const EarningsCalendar = () => {
     return logoDataArray;
   };
 
+  // Process earnings and logos
   const fetchTicker = async () => {
     if (earningsData) {
-      const tickerArray = (earningsData as EarningsData[]).reduce<string[]>(
-        (acc, curr) => {
-          acc.push(curr.ticker);
-          return acc;
-        },
-        []
+      const tickerArray = (earningsData as EarningsData[]).map(
+        (item) => item.ticker
       );
 
       const logoData = await fetchAllLogos(tickerArray);
-
       const structuredData = processEarningsData(earningsData, logoData);
 
       setCalendarData(structuredData);
     }
   };
 
-  const getCompanyDetails = (company: {
-    ticker: string;
-    logo: { files: { mark_vector_light: string } };
-  }) => {
-    return (
-      <>
-        <div className={styles.companyName}>{company.ticker}</div>
-        {company.logo.files.mark_vector_light && (
-          <a
-            href={`https://www.benzinga.com/quote/${company.ticker.toLowerCase()}`}
-            target="_blank"
-          >
-            <LazyImage
-              src={company.logo.files.mark_vector_light}
-              alt={company.ticker}
-            />
-          </a>
-        )}
-      </>
-    );
-  };
-
   useEffect(() => {
     if (!earningsData) return;
-
     fetchTicker();
   }, [earningsData]);
 
@@ -99,46 +79,25 @@ const EarningsCalendar = () => {
           </span>
         </div>
       </div>
-      <div className={styles.dayCalender}>
-        {calendarData &&
-          Object.keys(calendarData).map((date) => {
-            return (
-              <div className={styles.day} key={date}>
-                <div className={styles.dayTitle}>
-                  {dayjs(date).format("dddd")}
-                </div>
-                <div className={styles.marketTitle}>
-                  <div className={styles.text}>Before Open</div>
 
-                  <div className={styles.text}>
-                    {calendarData[date].after.length > 0 ? "After Close" : ""}
-                  </div>
-                </div>
-                <div className={styles.companiesSection}>
-                  <div className={styles.bmo}>
-                    {calendarData[date].before.map((company) => {
-                      return company.logo.files.mark_vector_light &&
-                        company.logo.files.mark_vector_light !== "" ? (
-                        <div className={styles.item} key={company.ticker}>
-                          {getCompanyDetails(company)}
-                        </div>
-                      ) : null;
-                    })}
-                  </div>
-                  <div className={styles.amc}>
-                    {calendarData[date].after.map((company) => {
-                      return company.logo.files.mark_vector_light ? (
-                        <div className={styles.item} key={company.ticker}>
-                          {getCompanyDetails(company)}
-                        </div>
-                      ) : null;
-                    })}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-      </div>
+      {!isMobile && (
+        <div className={styles.dayCalender}>
+          {calendarData &&
+            Object.keys(calendarData).map((date) => (
+              <EarningsDay key={date} calendarData={calendarData} date={date} />
+            ))}
+        </div>
+      )}
+
+      {isMobile && calendarData && (
+        <div className={styles.dayCalender}>
+          <HorizontalScroll totalSize={Object.keys(calendarData).length}>
+            {Object.keys(calendarData).map((date) => (
+              <EarningsDay key={date} calendarData={calendarData} date={date} />
+            ))}
+          </HorizontalScroll>
+        </div>
+      )}
     </div>
   );
 };
