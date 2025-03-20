@@ -21,7 +21,6 @@ const EarningsCalendar = () => {
     useState<
       Record<string, { before: CalendarData[]; after: CalendarData[] }>
     >();
-  const [currentIndex, setCurrentIndex] = useState(0);
 
   // Fetch logos in batches
   const fetchAllLogos = async (tickerArray: string[]) => {

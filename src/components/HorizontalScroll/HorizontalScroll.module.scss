@@ -32,8 +32,9 @@
         font-size: 16px;
         font-weight: bold;
         cursor: pointer;
-        margin: 0rem 1.5rem;
+        margin: 0rem 1rem;
         border-radius: 2rem;
+        padding: 1rem 1rem;
         &:hover {
             text-decoration: underline;
         }
@@ -42,11 +43,17 @@
     .prev {
         background-color: #e5eaed;
         color: #093451;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
     }
 
     .next {
+        display: flex;
+        align-items: center;
         background-color: #093451;
         color: #e5eaed;
+        gap: 0.4rem;
     }
 }
   

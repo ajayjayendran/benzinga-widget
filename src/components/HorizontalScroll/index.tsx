@@ -1,6 +1,8 @@
 import Slider from "react-slick";
 import styles from "./HorizontalScroll.module.scss";
 import { useRef, useState } from "react";
+import ArrowLeft from "../../assets/arrow-left.svg";
+import ArrowRight from "../../assets/arrow-right.svg";
 
 interface HorizontalScrollProps {
   children: React.ReactNode[];
@@ -52,10 +54,10 @@ const HorizontalScroll = ({ children, totalSize }: HorizontalScrollProps) => {
 
       <div className={styles.stickyFooter}>
         <button onClick={handlePrevDay} className={styles.prev}>
-          ⬅ Previous Day
+          <img src={ArrowLeft} /> Previous Day
         </button>
         <button onClick={handleNextDay} className={styles.next}>
-          Next Day ➡
+          Next Day <img src={ArrowRight} />
         </button>
       </div>
     </div>
