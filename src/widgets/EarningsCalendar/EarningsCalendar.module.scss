@@ -55,6 +55,13 @@
                 display: flex;
                 justify-content: space-between;
                 gap: 0.5rem;
+                height: 100%;
+                max-height: 74vh;
+                overflow: scroll;
+                @media (max-width: $mobile) {
+                    max-height: 100%;
+                    overflow: auto;
+                }
                 .amc, .bmo {
                     width: 100%;
                 }
