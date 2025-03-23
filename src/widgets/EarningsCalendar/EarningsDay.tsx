@@ -2,6 +2,8 @@ import dayjs from "dayjs";
 import styles from "./EarningsCalendar.module.scss";
 import LazyImage from "../../components/LazyImage";
 import { CalendarData } from "../../types/Earnings";
+import { useEffect, useRef, useState } from "react";
+import DownArrow from "../../assets/down-arrow.svg";
 
 const getCompanyDetails = (company: {
   ticker: string;
@@ -35,6 +37,33 @@ const EarningsDay = ({
     { before: CalendarData[]; after: CalendarData[] }
   >;
 }) => {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [showScrollIcon, setShowScrollIcon] = useState(true);
+
+  const handleScroll = () => {
+    if (!scrollContainerRef.current) return;
+    const { scrollTop, scrollHeight, clientHeight } =
+      scrollContainerRef.current;
+
+    // Show the button only if more content is below
+    setShowScrollIcon(scrollTop + clientHeight < scrollHeight - 10);
+  };
+
+  const handleScrollDown = () => {
+    if (!scrollContainerRef.current) return;
+    scrollContainerRef.current.scrollBy({ top: 500, behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.addEventListener("scroll", handleScroll);
+      handleScroll(); // Check on mount
+    }
+
+    return () => container?.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <div className={styles.day} key={date}>
       <div className={styles.dayTitle}>{dayjs(date).format("dddd")}</div>
@@ -45,7 +74,7 @@ const EarningsDay = ({
           {calendarData[date].after.length > 0 ? "After Close" : ""}
         </div>
       </div>
-      <div className={styles.companiesSection}>
+      <div className={styles.companiesSection} ref={scrollContainerRef}>
         <div className={styles.bmo}>
           {calendarData[date].before.map((company) => {
             return company.logo.files.mark_vector_light &&
@@ -66,6 +95,11 @@ const EarningsDay = ({
           })}
         </div>
       </div>
+      {showScrollIcon && (
+        <button className={styles.scrollButton} onClick={handleScrollDown}>
+          <img src={DownArrow} style={{ objectFit: "contain", width: 18 }} />
+        </button>
+      )}
     </div>
   );
 };

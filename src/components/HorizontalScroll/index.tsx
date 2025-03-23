@@ -54,10 +54,10 @@ const HorizontalScroll = ({ children, totalSize }: HorizontalScrollProps) => {
 
       <div className={styles.stickyFooter}>
         <button onClick={handlePrevDay} className={styles.prev}>
-          <img src={ArrowLeft} /> Previous Day
+          <img src={ArrowLeft} />
         </button>
         <button onClick={handleNextDay} className={styles.next}>
-          Next Day <img src={ArrowRight} />
+          <img src={ArrowRight} />
         </button>
       </div>
     </div>

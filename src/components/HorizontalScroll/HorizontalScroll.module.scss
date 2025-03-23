@@ -22,7 +22,7 @@
     box-shadow: 0px -2px 28px 0px #0000003D;
     border-top: 1px solid #E5E5E5;
     z-index: 100;
-    padding: 2rem 0rem;
+    padding: 0.5rem 0rem;
     
     button {
         outline: none;
@@ -32,9 +32,9 @@
         font-size: 16px;
         font-weight: bold;
         cursor: pointer;
-        margin: 0rem 1rem;
+        margin: 0rem 0.5rem;
         border-radius: 2rem;
-        padding: 1rem 1rem;
+        padding: 0.6rem 0.6rem;
         &:hover {
             text-decoration: underline;
         }
